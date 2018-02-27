@@ -5,7 +5,6 @@ import shutil
 import logging
 import argparse
 
-from pprint import pprint
 from colorlog import ColoredFormatter
 import exiftool
 
