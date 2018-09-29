@@ -55,20 +55,20 @@ def get_file_date(file):
     d = piexif.load(file,True)
     try:
         log.debug('🜏 {}: {}'.format(
-            file, d['EXIF:DateTimeOriginal'].split()[0]))
-        return d['EXIF:DateTimeOriginal'].split()[0]
+            file, d['Exif']['DateTimeOriginal'].split()[0]))
+        return d['Exif']['DateTimeOriginal'].split()[0]
         try:
             log.debug('d {}: {}'.format(
-                file, d['Composite:DateTimeOriginal'].split()[0]))
-            return d['Composite:DateTimeOriginal'].split()[0]
+                file, d['Composite']['DateTimeOriginal'].split()[0]))
+            return d['Composite']['DateTimeOriginal'].split()[0]
         except:
             log.debug(' {}: {}'.format(
-                 file, d['File:FileModifyDate'].split()[0]))
-            return d['File:FileModifyDate'].split()[0]
+                 file, d['File']['FileModifyDate'].split()[0]))
+            return d['File']['FileModifyDate'].split()[0]
     except:
         log.debug('⛧ {}: {}'.format(
-            file, d['File:FileModifyDate'].split()[0]))
-        return d['File:FileModifyDate'].split()[0]
+            file, d['File']['FileModifyDate'].split()[0]))
+        return d['File']['FileModifyDate'].split()[0]
 
 
 def copy_move(filedescr):
