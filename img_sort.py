@@ -6,7 +6,7 @@ import logging
 import argparse
 
 from colorlog import ColoredFormatter
-import exiftool
+import piexif
 
 
 formatter = ColoredFormatter(
@@ -52,24 +52,23 @@ def outdir_name(file, outdir, sorttypes):
 
 
 def get_file_date(file):
-    with exiftool.ExifTool() as et:
-        d = et.get_metadata(file)
+    d = piexif.load(file,True)
+    try:
+        log.debug('🜏 {}: {}'.format(
+            file, d['EXIF:DateTimeOriginal'].split()[0]))
+        return d['EXIF:DateTimeOriginal'].split()[0]
         try:
-            log.debug('🜏 {}: {}'.format(
-                file, d['EXIF:DateTimeOriginal'].split()[0]))
-            return d['EXIF:DateTimeOriginal'].split()[0]
-            try:
-                log.debug('d {}: {}'.format(
-                    file, d['Composite:DateTimeOriginal'].split()[0]))
-                return d['Composite:DateTimeOriginal'].split()[0]
-            except:
-                log.debug(' {}: {}'.format(
-                    file, d['File:FileModifyDate'].split()[0]))
-                return d['File:FileModifyDate'].split()[0]
+            log.debug('d {}: {}'.format(
+                file, d['Composite:DateTimeOriginal'].split()[0]))
+            return d['Composite:DateTimeOriginal'].split()[0]
         except:
-            log.debug('⛧ {}: {}'.format(
-                file, d['File:FileModifyDate'].split()[0]))
+            log.debug(' {}: {}'.format(
+                 file, d['File:FileModifyDate'].split()[0]))
             return d['File:FileModifyDate'].split()[0]
+    except:
+        log.debug('⛧ {}: {}'.format(
+            file, d['File:FileModifyDate'].split()[0]))
+        return d['File:FileModifyDate'].split()[0]
 
 
 def copy_move(filedescr):
